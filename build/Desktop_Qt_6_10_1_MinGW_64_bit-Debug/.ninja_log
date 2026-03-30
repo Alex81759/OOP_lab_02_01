@@ -1,0 +1,18 @@
+# ninja log v6
+23	1675	7965971342213180	CMakeFiles/OOP_lab_02_01.dir/main.cpp.obj	cb6a8602c5404b1
+157	1680	7965971343538159	CMakeFiles/OOP_lab_02_01.dir/outputPrinter.cpp.obj	565eda0d5a964a9b
+180	1684	7965971343743582	CMakeFiles/OOP_lab_02_01.dir/appController.cpp.obj	69283eaf86befadb
+133	1686	7965971343228579	CMakeFiles/OOP_lab_02_01.dir/inputReader.cpp.obj	8a402df70a156d50
+203	1698	7965971343945556	CMakeFiles/OOP_lab_02_01.dir/matrixTester.cpp.obj	96a567b554e011b0
+52	304	7965971685546821	CMakeFiles/OOP_lab_02_01.dir/matrix.cpp.obj	1dee963c1ebd50a3
+10	606	7965971685116824	CMakeFiles/OOP_lab_02_01.dir/main.cpp.obj	cb6a8602c5404b1
+121	635	7965971686232077	CMakeFiles/OOP_lab_02_01.dir/appController.cpp.obj	69283eaf86befadb
+100	647	7965971686026982	CMakeFiles/OOP_lab_02_01.dir/outputPrinter.cpp.obj	565eda0d5a964a9b
+75	660	7965971685776822	CMakeFiles/OOP_lab_02_01.dir/inputReader.cpp.obj	8a402df70a156d50
+150	733	7965971686529749	CMakeFiles/OOP_lab_02_01.dir/matrixTester.cpp.obj	96a567b554e011b0
+7	657	7965971876386067	CMakeFiles/OOP_lab_02_01.dir/appController.cpp.obj	69283eaf86befadb
+7	1197	7965973158432229	CMakeFiles/OOP_lab_02_01.dir/outputPrinter.cpp.obj	565eda0d5a964a9b
+54	1219	7965973158897513	CMakeFiles/OOP_lab_02_01.dir/appController.cpp.obj	69283eaf86befadb
+33	597	7965973267553504	CMakeFiles/OOP_lab_02_01.dir/main.cpp.obj	cb6a8602c5404b1
+91	673	7965973268132884	CMakeFiles/OOP_lab_02_01.dir/appController.cpp.obj	69283eaf86befadb
+39	706	7965973357732870	CMakeFiles/OOP_lab_02_01.dir/inputReader.cpp.obj	8a402df70a156d50
