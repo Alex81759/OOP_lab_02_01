@@ -3,19 +3,20 @@
 
 #include "inputReader.h"
 #include "outputPrinter.h"
-#include "matrixTester.h"
+#include "matrixtester.h"
 
 class AppController {
-    private:
+private:
+    void processMenuChoice(int choice, bool& isRunning);
+    void runTests();
+    void showDemo();
 
-        void processMenuChoice(int choice, bool& isRunning);
-        void runTests();
-        void showDemo();
-        InputReader input;
-        OutputPrinter output;
-        MatrixTester tester;
-    public:
-        void run();
+    InputReader input;
+    OutputPrinter output;
+    MatrixTester tester;
+
+public:
+    void run();
 };
 
 #endif // APPCONTROLLER_H

@@ -1,6 +1,7 @@
 #ifndef OUTPUTPRINTER_H
 #define OUTPUTPRINTER_H
 
+#include <iostream>
 #include <string>
 #include "matrix.h"
 

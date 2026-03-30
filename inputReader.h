@@ -1,8 +1,6 @@
 #ifndef INPUTREADER_H
 #define INPUTREADER_H
 
-#include <string>
-
 class InputReader {
 public:
     int readMenuChoice(int minValue, int maxValue) const;

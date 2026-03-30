@@ -1,55 +1,31 @@
-#include "appController.h"
-#include "matrix.h"
-#include <exception>
+#include "inputReader.h"
+#include <iostream>
+#include <limits>
 
-namespace {
-const int menuExitValue = 0;
-const int menuRunTestsValue = 1;
-const int menuShowDemoValue = 2;
-const int menuMinValue = 0;
-const int menuMaxValue = 2;
-}
+int InputReader::readMenuChoice(int minValue, int maxValue) const {
+    int value = 0;
+    bool isValid = false;
 
-void AppController::run() {
-    bool isRunning = true;
+    while (!isValid) {
+        std::cout << "Choose menu item [" << minValue << ".." << maxValue << "]: ";
+        std::cin >> value;
 
-    while (isRunning) {
-        try {
-            output.printMainMenu();
-            const int choice = input.readMenuChoice(menuMinValue, menuMaxValue);
-            processMenuChoice(choice, isRunning);
-        } catch (const std::exception& ex) {
-            output.printError(ex.what());
+        isValid = isChoiceValid(value, minValue, maxValue);
+        if (!isValid) {
+            std::cout << "Invalid input. Try again.\n";
         }
+
+        clearInput();
     }
+
+    return value;
 }
 
-void AppController::processMenuChoice(int choice, bool& isRunning) {
-    if (choice == menuExitValue) {
-        isRunning = false;
-    } else if (choice == menuRunTestsValue) {
-        runTests();
-    } else {
-        showDemo();
-    }
+void InputReader::clearInput() const {
+    std::cin.clear();
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 }
 
-void AppController::runTests() {
-    tester.runAllTests(output);
-}
-
-void AppController::showDemo() {
-    Matrix<int> left{{1, 2}, {3, 4}};
-    Matrix<int> right{{5, 6}, {7, 8}};
-    Matrix<int> sum = left + right;
-    Matrix<int> product = left * right;
-
-    output.printMessage("Left matrix:");
-    output.printMatrix(left);
-    output.printMessage("Right matrix:");
-    output.printMatrix(right);
-    output.printMessage("Sum:");
-    output.printMatrix(sum);
-    output.printMessage("Product:");
-    output.printMatrix(product);
+bool InputReader::isChoiceValid(int value, int minValue, int maxValue) const {
+    return std::cin.good() && value >= minValue && value <= maxValue;
 }

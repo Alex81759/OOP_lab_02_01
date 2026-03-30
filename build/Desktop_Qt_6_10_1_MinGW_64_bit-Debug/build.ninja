@@ -55,12 +55,6 @@ build CMakeFiles/OOP_lab_02_01.dir/main.cpp.obj: CXX_COMPILER__OOP_lab_02_01_uns
   OBJECT_DIR = CMakeFiles\OOP_lab_02_01.dir
   OBJECT_FILE_DIR = CMakeFiles\OOP_lab_02_01.dir
 
-build CMakeFiles/OOP_lab_02_01.dir/matrix.cpp.obj: CXX_COMPILER__OOP_lab_02_01_unscanned_Debug C$:/Users/admin/Desktop/Qt_Projects(NEW)/OOP_lab_02_01/matrix.cpp || cmake_object_order_depends_target_OOP_lab_02_01
-  DEP_FILE = CMakeFiles\OOP_lab_02_01.dir\matrix.cpp.obj.d
-  FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
-  OBJECT_DIR = CMakeFiles\OOP_lab_02_01.dir
-  OBJECT_FILE_DIR = CMakeFiles\OOP_lab_02_01.dir
-
 build CMakeFiles/OOP_lab_02_01.dir/inputReader.cpp.obj: CXX_COMPILER__OOP_lab_02_01_unscanned_Debug C$:/Users/admin/Desktop/Qt_Projects(NEW)/OOP_lab_02_01/inputReader.cpp || cmake_object_order_depends_target_OOP_lab_02_01
   DEP_FILE = CMakeFiles\OOP_lab_02_01.dir\inputReader.cpp.obj.d
   FLAGS = -DQT_QML_DEBUG -g -std=gnu++17 -fdiagnostics-color=always
@@ -93,7 +87,7 @@ build CMakeFiles/OOP_lab_02_01.dir/matrixTester.cpp.obj: CXX_COMPILER__OOP_lab_0
 #############################################
 # Link the executable OOP_lab_02_01.exe
 
-build OOP_lab_02_01.exe: CXX_EXECUTABLE_LINKER__OOP_lab_02_01_Debug CMakeFiles/OOP_lab_02_01.dir/main.cpp.obj CMakeFiles/OOP_lab_02_01.dir/matrix.cpp.obj CMakeFiles/OOP_lab_02_01.dir/inputReader.cpp.obj CMakeFiles/OOP_lab_02_01.dir/outputPrinter.cpp.obj CMakeFiles/OOP_lab_02_01.dir/appController.cpp.obj CMakeFiles/OOP_lab_02_01.dir/matrixTester.cpp.obj
+build OOP_lab_02_01.exe: CXX_EXECUTABLE_LINKER__OOP_lab_02_01_Debug CMakeFiles/OOP_lab_02_01.dir/main.cpp.obj CMakeFiles/OOP_lab_02_01.dir/inputReader.cpp.obj CMakeFiles/OOP_lab_02_01.dir/outputPrinter.cpp.obj CMakeFiles/OOP_lab_02_01.dir/appController.cpp.obj CMakeFiles/OOP_lab_02_01.dir/matrixTester.cpp.obj
   FLAGS = -DQT_QML_DEBUG -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\OOP_lab_02_01.dir

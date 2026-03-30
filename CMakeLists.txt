@@ -6,14 +6,15 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(OOP_lab_02_01 main.cpp
-    matrix.h matrix.cpp
+
     matrixExceptions.h
 
     inputReader.h inputReader.cpp
     outputPrinter.h outputPrinter.cpp
     appController.h appController.cpp
     matrixIterator.h
-    matrixTester.h matrixTester.cpp)
+    matrixTester.h matrixTester.cpp
+    matrix.h)
 
 include(GNUInstallDirs)
 install(TARGETS OOP_lab_02_01

@@ -12,6 +12,7 @@ const int menuMaxValue = 2;
 
 void AppController::run() {
     bool isRunning = true;
+
     while (isRunning) {
         try {
             output.printMainMenu();
@@ -45,10 +46,13 @@ void AppController::showDemo() {
 
     output.printMessage("Left matrix:");
     output.printMatrix(left);
+
     output.printMessage("Right matrix:");
     output.printMatrix(right);
+
     output.printMessage("Sum:");
     output.printMatrix(sum);
+
     output.printMessage("Product:");
     output.printMatrix(product);
 }

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <new>
 #include <cmath>
+#include <utility>
 #include "matrixExceptions.h"
 
 template<typename T>
@@ -18,31 +19,45 @@ public:
     Matrix(Matrix<T>&& matr) noexcept;
     explicit Matrix(std::initializer_list<std::initializer_list<T>> lst);
     ~Matrix();
+
     Matrix<T>& operator=(const Matrix<T>& matr);
+    Matrix<T>& operator=(Matrix<T>&& matr) noexcept;
+
     Matrix<T>& operator+=(const Matrix<T>& matr);
     Matrix<T>& operator-=(const Matrix<T>& matr);
+
     template<typename _T>
     friend Matrix<_T> operator+(const Matrix<_T>& m1, const Matrix<_T>& m2);
+
     template<typename _T>
     friend Matrix<_T> operator-(const Matrix<_T>& m1, const Matrix<_T>& m2);
+
     template<typename _T>
     friend Matrix<_T> operator*(const Matrix<_T>& m1, const Matrix<_T>& m2);
+
     template<typename _T>
     friend Matrix<_T> operator+(const Matrix<_T>& m1, double num);
+
     template<typename _T>
     friend Matrix<_T> operator-(const Matrix<_T>& m1, double num);
+
     template<typename _T>
     friend Matrix<_T> operator/(const Matrix<_T>& m1, double num);
+
     template<typename _T>
     friend Matrix<_T> operator*(const Matrix<_T>& m1, double num);
+
     template<typename _T>
     friend std::ostream& operator<<(std::ostream& os, const Matrix<_T>& matr);
+
     void set_elem(unsigned int i, unsigned int j, const T& elem);
     T& get_elem(unsigned int i, unsigned int j);
     T& operator()(unsigned int i, unsigned int j);
-    bool is_square();
+
+    bool is_square() const;
     unsigned int get_row() const;
     unsigned int get_columns() const;
+
     Iterator<T> iterator_begin();
     Iterator<T> iterator_end();
 
@@ -57,12 +72,15 @@ private:
     void copyData(const T* source, unsigned int count);
     void fillDefaultValues(unsigned int count);
     void releaseMemory();
+
     void validateIndices(unsigned int i, unsigned int j) const;
     void validateEqualSize(const Matrix<T>& matr) const;
     void validateMultiplicationSize(const Matrix<T>& matr) const;
     void validateInitializerList(std::initializer_list<std::initializer_list<T>> lst) const;
+
     unsigned int getLinearIndex(unsigned int i, unsigned int j) const;
     unsigned int getStorageSize() const;
+
     T& getByLinearIndex(unsigned int index);
     const T& getByLinearIndex(unsigned int index) const;
 
@@ -84,8 +102,12 @@ Matrix<T>::Matrix(unsigned int n, unsigned int m)
 template<typename T>
 Matrix<T>::Matrix(const Matrix<T>& matr)
     : rows_(matr.rows_), columns_(matr.columns_), data_(nullptr) {
-    allocateMemory(rows_ * columns_);
-    copyData(matr.data_, rows_ * columns_);
+    const unsigned int size = rows_ * columns_;
+
+    if (size > 0) {
+        allocateMemory(size);
+        copyData(matr.data_, size);
+    }
 }
 
 template<typename T>
@@ -105,13 +127,15 @@ Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> lst)
 
     validateInitializerList(lst);
     columns_ = static_cast<unsigned int>(lst.begin()->size());
+
     allocateMemory(rows_ * columns_);
+    fillDefaultValues(rows_ * columns_);
 
     unsigned int rowIndex = 0;
     for (const auto& row : lst) {
         unsigned int columnIndex = 0;
         for (const auto& value : row) {
-            set_elem(rowIndex, columnIndex, value);
+            data_[getLinearIndex(rowIndex, columnIndex)] = value;
             ++columnIndex;
         }
         ++rowIndex;
@@ -128,20 +152,39 @@ Matrix<T>& Matrix<T>::operator=(const Matrix<T>& matr) {
     if (this != &matr) {
         T* newData = nullptr;
         const unsigned int newSize = matr.rows_ * matr.columns_;
-        newData = new (std::nothrow) T[newSize];
 
-        if (newData == nullptr) {
-            throw MatrixMemoryException("Memory error: failed to allocate memory for matrix assignment.");
-        }
+        if (newSize > 0) {
+            newData = new (std::nothrow) T[newSize];
+            if (newData == nullptr) {
+                throw MatrixMemoryException("Memory error: failed to allocate memory for matrix assignment.");
+            }
 
-        for (unsigned int index = 0; index < newSize; ++index) {
-            newData[index] = matr.data_[index];
+            for (unsigned int index = 0; index < newSize; ++index) {
+                newData[index] = matr.data_[index];
+            }
         }
 
         releaseMemory();
         data_ = newData;
         rows_ = matr.rows_;
         columns_ = matr.columns_;
+    }
+
+    return *this;
+}
+
+template<typename T>
+Matrix<T>& Matrix<T>::operator=(Matrix<T>&& matr) noexcept {
+    if (this != &matr) {
+        releaseMemory();
+
+        rows_ = matr.rows_;
+        columns_ = matr.columns_;
+        data_ = matr.data_;
+
+        matr.rows_ = 0;
+        matr.columns_ = 0;
+        matr.data_ = nullptr;
     }
 
     return *this;
@@ -189,14 +232,8 @@ T& Matrix<T>::operator()(unsigned int i, unsigned int j) {
 }
 
 template<typename T>
-bool Matrix<T>::is_square() {
-    bool result = false;
-
-    if (rows_ == columns_) {
-        result = true;
-    }
-
-    return result;
+bool Matrix<T>::is_square() const {
+    return rows_ == columns_;
 }
 
 template<typename T>
@@ -211,10 +248,13 @@ unsigned int Matrix<T>::get_columns() const {
 
 template<typename T>
 void Matrix<T>::allocateMemory(unsigned int count) {
-    data_ = new (std::nothrow) T[count];
-
-    if (data_ == nullptr) {
-        throw MatrixMemoryException("Memory error: failed to allocate matrix storage.");
+    if (count == 0) {
+        data_ = nullptr;
+    } else {
+        data_ = new (std::nothrow) T[count];
+        if (data_ == nullptr) {
+            throw MatrixMemoryException("Memory error: failed to allocate matrix storage.");
+        }
     }
 }
 
@@ -306,8 +346,8 @@ template<typename _T>
 Matrix<_T> operator+(const Matrix<_T>& m1, const Matrix<_T>& m2) {
     m1.validateEqualSize(m2);
     Matrix<_T> result(m1);
-
     const unsigned int size = result.getStorageSize();
+
     for (unsigned int index = 0; index < size; ++index) {
         result.data_[index] = m1.data_[index] + m2.data_[index];
     }
@@ -319,8 +359,8 @@ template<typename _T>
 Matrix<_T> operator-(const Matrix<_T>& m1, const Matrix<_T>& m2) {
     m1.validateEqualSize(m2);
     Matrix<_T> result(m1);
-
     const unsigned int size = result.getStorageSize();
+
     for (unsigned int index = 0; index < size; ++index) {
         result.data_[index] = m1.data_[index] - m2.data_[index];
     }
@@ -416,14 +456,12 @@ std::ostream& operator<<(std::ostream& os, const Matrix<_T>& matr) {
 
 template<typename T>
 Iterator<T> Matrix<T>::iterator_begin() {
-    Iterator<T> iterator(*this);
-    return iterator;
+    return Iterator<T>(*this);
 }
 
 template<typename T>
 Iterator<T> Matrix<T>::iterator_end() {
-    Iterator<T> iterator(*this, getStorageSize());
-    return iterator;
+    return Iterator<T>(*this, getStorageSize());
 }
 
-#endif
+#endif // MATRIX_H

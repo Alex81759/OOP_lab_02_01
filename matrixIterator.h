@@ -66,13 +66,7 @@ T Iterator<T>::value() {
 
 template<typename T>
 bool Iterator<T>::is_end() {
-    bool result = false;
-
-    if (index_ >= matrix_->getStorageSize()) {
-        result = true;
-    }
-
-    return result;
+    return matrix_ == nullptr || index_ >= matrix_->getStorageSize();
 }
 
 template<typename T>
@@ -93,29 +87,17 @@ T& Iterator<T>::operator*() {
 
 template<typename T>
 bool Iterator<T>::operator==(const Iterator<T>& other) {
-    bool result = false;
-
-    if (matrix_ == other.matrix_ && index_ == other.index_) {
-        result = true;
-    }
-
-    return result;
+    return matrix_ == other.matrix_ && index_ == other.index_;
 }
 
 template<typename T>
 bool Iterator<T>::operator!=(const Iterator<T>& other) {
-    bool result = true;
-
-    if (*this == other) {
-        result = false;
-    }
-
-    return result;
+    return !(*this == other);
 }
 
 template<typename T>
 void Iterator<T>::validateAccess() const {
-    if (index_ >= matrix_->getStorageSize()) {
+    if (matrix_ == nullptr || index_ >= matrix_->getStorageSize()) {
         throw MatrixIteratorException("Iterator error: cannot access end iterator.");
     }
 }
