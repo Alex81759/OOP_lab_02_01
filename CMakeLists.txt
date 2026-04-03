@@ -12,9 +12,11 @@ add_executable(OOP_lab_02_01 main.cpp
     inputReader.h inputReader.cpp
     outputPrinter.h outputPrinter.cpp
     appController.h appController.cpp
-    matrixIterator.h
+
     matrixTester.h matrixTester.cpp
-    matrix.h)
+    matrix.h
+    matrixIterator.h
+)
 
 include(GNUInstallDirs)
 install(TARGETS OOP_lab_02_01

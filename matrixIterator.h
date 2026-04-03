@@ -8,44 +8,35 @@ class Matrix;
 
 template<typename T>
 class Iterator {
-public:
-    explicit Iterator(Matrix<T>& containerObj);
-    Iterator(const Iterator<T>& other);
-
-    Iterator<T> next();
-    T value();
-    bool is_end();
-
-    Iterator<T>& operator++();
-    T& operator*();
-    bool operator==(const Iterator<T>& other);
-    bool operator!=(const Iterator<T>& other);
-
-private:
-    Iterator(Matrix<T>& containerObj, unsigned int index);
-
-    Matrix<T>* matrix_;
-    unsigned int index_;
-
-    void validateAccess() const;
-
-    template<typename U>
-    friend class Matrix;
+    private:
+        Iterator(Matrix<T>& containerObj, unsigned int index);
+        Matrix<T>* matrix;
+        unsigned int index;
+        void validateAccess() const;
+        template<typename U>
+        friend class Matrix;
+    public:
+        explicit Iterator(Matrix<T>& containerObj);
+        Iterator(const Iterator<T>& other);
+        Iterator<T> next();
+        T value();
+        bool is_end();
+        Iterator<T>& operator++();
+        T& operator*();
+        bool operator==(const Iterator<T>& other);
+        bool operator!=(const Iterator<T>& other);
 };
 
 template<typename T>
-Iterator<T>::Iterator(Matrix<T>& containerObj)
-    : matrix_(&containerObj), index_(0) {
+Iterator<T>::Iterator(Matrix<T>& containerObj) : matrix(&containerObj), index(0) { // matrix
 }
 
 template<typename T>
-Iterator<T>::Iterator(const Iterator<T>& other)
-    : matrix_(other.matrix_), index_(other.index_) {
+Iterator<T>::Iterator(const Iterator<T>& other) : matrix(other.matrix), index(other.index) {
 }
 
 template<typename T>
-Iterator<T>::Iterator(Matrix<T>& containerObj, unsigned int index)
-    : matrix_(&containerObj), index_(index) {
+Iterator<T>::Iterator(Matrix<T>& containerObj, unsigned int index) : matrix(&containerObj), index(index) {
 }
 
 template<typename T>
@@ -53,20 +44,19 @@ Iterator<T> Iterator<T>::next() {
     if (is_end()) {
         throw MatrixIteratorException("Iterator error: cannot move after end iterator.");
     }
-
-    Iterator<T> nextIterator(*matrix_, index_ + 1);
+    Iterator<T> nextIterator(*matrix, index + 1); // передвигать итератор
     return nextIterator;
 }
 
 template<typename T>
 T Iterator<T>::value() {
     validateAccess();
-    return matrix_->getByLinearIndex(index_);
+    return matrix->getByLinearIndex(index);
 }
 
 template<typename T>
 bool Iterator<T>::is_end() {
-    return matrix_ == nullptr || index_ >= matrix_->getStorageSize();
+    return matrix == nullptr || index >= matrix->getStorageSize();
 }
 
 template<typename T>
@@ -74,20 +64,19 @@ Iterator<T>& Iterator<T>::operator++() {
     if (is_end()) {
         throw MatrixIteratorException("Iterator error: cannot increment end iterator.");
     }
-
-    ++index_;
+    ++index;
     return *this;
 }
 
 template<typename T>
 T& Iterator<T>::operator*() {
     validateAccess();
-    return matrix_->getByLinearIndex(index_);
+    return matrix->getByLinearIndex(index);
 }
 
 template<typename T>
 bool Iterator<T>::operator==(const Iterator<T>& other) {
-    return matrix_ == other.matrix_ && index_ == other.index_;
+    return matrix == other.matrix && index == other.index;
 }
 
 template<typename T>
@@ -97,7 +86,7 @@ bool Iterator<T>::operator!=(const Iterator<T>& other) {
 
 template<typename T>
 void Iterator<T>::validateAccess() const {
-    if (matrix_ == nullptr || index_ >= matrix_->getStorageSize()) {
+    if (matrix == nullptr || index >= matrix->getStorageSize()) {
         throw MatrixIteratorException("Iterator error: cannot access end iterator.");
     }
 }
